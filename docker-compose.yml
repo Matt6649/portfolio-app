@@ -1,0 +1,22 @@
+services:
+  portfolio:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PUBLIC_PORT: ${PUBLIC_PORT:-8080}
+      ADMIN_PORT: ${ADMIN_PORT:-8081}
+    ports:
+      # Public portfolio page - exposed on all interfaces.
+      - "${PUBLIC_PORT:-8080}:${PUBLIC_PORT:-8080}"
+      # Admin dashboard - bound to localhost only by default, so it is
+      # NOT reachable from the public internet. Access it via:
+      #   - directly, if you're on the same machine
+      #   - an SSH tunnel, if the app runs on a remote server:
+      #       ssh -L 8081:localhost:8081 you@your-server
+      # Change "127.0.0.1:" below to expose it more widely ONLY if you've
+      # put a TLS reverse proxy in front of it (see README.md).
+      - "127.0.0.1:${ADMIN_PORT:-8081}:${ADMIN_PORT:-8081}"
+    volumes:
+      - ./data:/app/data

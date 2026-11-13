@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  // Applied before first paint so a saved light/dark choice never flashes.
+  try {
+    var savedTheme = localStorage.getItem('portfolio-theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="/style.css" />
+<!--HEAD-->
+</head>
+<body data-cover-style="{{coverStyle}}">
+  <header class="cover{{coverClass}}">
+    {{coverBg}}
+    <div class="cover-scrim"></div>
+
+    <nav class="cover-nav" aria-label="Contact and social links">
+      {{socials}}
+      {{contact}}
+      <button id="theme-toggle" class="icon-btn" type="button"></button>
+    </nav>
+
+    <div class="cover-content">
+      {{photo}}
+      <h1>{{name}}</h1>
+      {{tagline}}
+      {{bio}}
+    </div>
+  </header>
+
+  <div id="app">
+    <div class="filter-panel" role="search">
+      <label class="search-field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.500 4.500"/></svg>
+        <input id="search-input" type="search" placeholder="Search articles" aria-label="Search articles" />
+      </label>
+      <select id="source-filter" aria-label="Filter by source"><option value="">All sources</option></select>
+      <select id="section-filter" aria-label="Filter by section" hidden><option value="">All sections</option></select>
+      <label class="featured-toggle" id="featured-toggle-wrap" hidden>
+        <input id="featured-filter" type="checkbox" /> Featured only
+      </label>
+    </div>
+
+    <main>
+      <section id="featured-section" hidden>
+        <h2 class="section-title">Featured</h2>
+        <div id="featured-articles" class="featured-grid"></div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2 class="section-title">Articles</h2>
+          <span id="article-count" class="article-count"></span>
+        </div>
+        <div id="articles" class="articles-grid"></div>
+        <p id="empty-state" class="empty-state" hidden>No articles here yet.</p>
+        <p id="no-results" class="empty-state" hidden>Nothing matches that search. <button id="clear-filters" class="link-btn" type="button">Clear filters</button></p>
+        <div class="show-more-wrap"><button id="show-more" class="show-more" type="button" hidden>Show more</button></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Article excerpts, images and other linked content remain the property of their
+         original publishers. This page aggregates publicly available work for portfolio
+         purposes only.</p>
+    </footer>
+  </div>
+
+  <script id="portfolio-data" type="application/json">{{data}}</script>
+  <script src="/app.js"></script>
+</body>
+</html>

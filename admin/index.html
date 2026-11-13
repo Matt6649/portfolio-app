@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Portfolio</title>
+<link rel="stylesheet" href="/fonts/playfair-display/wght.css" />
+<link rel="stylesheet" href="/fonts/fraunces/wght.css" />
+<link rel="stylesheet" href="/fonts/inter/wght.css" />
+<link rel="stylesheet" href="/fonts/space-grotesk/wght.css" />
+<link rel="stylesheet" href="/fonts/jetbrains-mono/wght.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <section id="login-view" hidden>
+      <div class="panel narrow">
+        <h1>Portfolio Admin</h1>
+
+        <div id="login-panel" hidden>
+          <p>Log in with your passkey.</p>
+          <button id="login-btn" class="btn primary">Log in with passkey</button>
+          <p id="login-error" class="error"></p>
+        </div>
+
+        <div id="setup-panel" hidden>
+          <p>No passkey has been registered yet. Enter your one-time setup token
+             (from <code>SETUP_TOKEN</code> in your <code>.env</code> file) to register your first passkey.</p>
+          <label>Setup token
+            <input id="setup-token" type="password" autocomplete="off" />
+          </label>
+          <label>Device label (optional)
+            <input id="device-label" type="text" placeholder="e.g. MacBook Touch ID" />
+          </label>
+          <button id="setup-btn" class="btn primary">Register passkey</button>
+          <p id="setup-error" class="error"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard-view" hidden>
+      <header class="admin-header">
+        <h1>Portfolio Admin</h1>
+        <div>
+          <a id="view-site-link" href="/" target="_blank" rel="noopener" class="btn">View public site</a>
+          <button id="logout-btn" class="btn" hidden>Log out</button>
+        </div>
+      </header>
+
+      <div class="panel">
+        <h2>Profile</h2>
+        <div class="profile-form">
+          <div>
+            <img id="photo-preview" class="photo-preview" alt="" hidden />
+            <label class="hint" style="margin-bottom:4px">Profile photo</label>
+            <input id="photo-input" type="file" accept="image/*" />
+          </div>
+          <label>Name
+            <input id="profile-name" type="text" />
+          </label>
+          <label>Tagline
+            <input id="profile-tagline" type="text" placeholder="e.g. Journalist covering politics & tech" />
+          </label>
+          <label>Bio
+            <textarea id="profile-bio" rows="4"></textarea>
+          </label>
+          <label>Accent colour
+            <div class="color-row">
+              <input id="accent-color-swatch" type="color" />
+              <input id="accent-color-text" type="text" placeholder="#2d5bff" style="max-width:120px" />
+            </div>
+          </label>
+          <button id="save-profile-btn" class="btn primary">Save profile</button>
+          <span id="profile-saved" class="saved-msg"></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Cover image</h2>
+        <p class="hint">Shown behind your photo, name, tagline and bio at the top of your public
+           page, with a wash over it so that text always stays readable. Leave unset for a plain header.</p>
+        <img id="cover-preview" class="cover-preview" alt="" hidden />
+        <div class="add-row">
+          <input id="cover-input" type="file" accept="image/*" />
+          <button id="remove-cover-btn" class="btn danger" hidden>Remove cover</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Display &amp; SEO settings</h2>
+
+        <p class="hint">Themes are just a quick starting point - pick one to fill in the fields
+           below, then tweak anything you like before saving.</p>
+        <div class="theme-presets" id="theme-presets">
+          <button type="button" class="theme-preset-btn" data-theme="editorial">
+            <span class="theme-preview theme-preview-editorial">Aa</span>Editorial
+          </button>
+          <button type="button" class="theme-preset-btn" data-theme="literary">
+            <span class="theme-preview theme-preview-literary">Aa</span>Literary
+          </button>
+          <button type="button" class="theme-preset-btn" data-theme="modern">
+            <span class="theme-preview theme-preview-modern">Aa</span>Modern
+          </button>
+          <button type="button" class="theme-preset-btn" data-theme="bold">
+            <span class="theme-preview theme-preview-bold">Aa</span>Bold
+          </button>
+          <button type="button" class="theme-preset-btn" data-theme="minimal">
+            <span class="theme-preview theme-preview-minimal">Aa</span>Minimal
+          </button>
+        </div>
+
+        <label>Cover style
+          <select id="cover-style-select">
+            <option value="dark">Dark overlay (photo dimmed, white text)</option>
+            <option value="wash">Soft wash (fades toward page background)</option>
+            <option value="accent">Accent tint (tinted with your accent colour)</option>
+          </select>
+        </label>
+        <label>Cover wash strength <span class="hint">(how strong the overlay is)</span>
+          <input id="cover-wash-slider" type="range" min="40" max="95" value="84" />
+        </label>
+        <label>Profile photo shape
+          <select id="photo-shape-select">
+            <option value="circle">Circle</option>
+            <option value="square">Rounded square</option>
+          </select>
+        </label>
+        <label>Heading font <span class="hint">(used for your name and article titles)</span>
+          <select id="heading-font-select">
+            <optgroup label="Serif">
+              <option value="playfair">Playfair Display</option>
+              <option value="fraunces">Fraunces</option>
+              <option value="source-serif">Source Serif</option>
+              <option value="serif">System serif (Georgia)</option>
+            </optgroup>
+            <optgroup label="Sans-serif">
+              <option value="inter">Inter</option>
+              <option value="dm-sans">DM Sans</option>
+              <option value="space-grotesk">Space Grotesk</option>
+              <option value="sans">System sans-serif</option>
+            </optgroup>
+            <optgroup label="Monospace">
+              <option value="jetbrains-mono">JetBrains Mono</option>
+              <option value="mono">System monospace</option>
+            </optgroup>
+          </select>
+        </label>
+        <label>Body font <span class="hint">(used for your tagline, bio and excerpts)</span>
+          <select id="font-style-select">
+            <optgroup label="Serif">
+              <option value="playfair">Playfair Display</option>
+              <option value="fraunces">Fraunces</option>
+              <option value="source-serif">Source Serif</option>
+              <option value="serif">System serif (Georgia)</option>
+            </optgroup>
+            <optgroup label="Sans-serif">
+              <option value="inter">Inter</option>
+              <option value="dm-sans">DM Sans</option>
+              <option value="space-grotesk">Space Grotesk</option>
+              <option value="sans">System sans-serif</option>
+            </optgroup>
+            <optgroup label="Monospace">
+              <option value="jetbrains-mono">JetBrains Mono</option>
+              <option value="mono">System monospace</option>
+            </optgroup>
+          </select>
+        </label>
+        <label>Article layout
+          <select id="default-view-select">
+            <option value="grid">Grid</option>
+            <option value="list">List</option>
+          </select>
+        </label>
+        <label><input id="show-excerpts-check" type="checkbox" style="width:auto;display:inline-block;margin-right:6px" /> Show excerpts on article cards</label>
+        <label><input id="show-dates-check" type="checkbox" style="width:auto;display:inline-block;margin-right:6px" /> Show publish dates on article cards</label>
+        <label>Browser tab title <span class="hint">(defaults to your name if left blank)</span>
+          <input id="page-title-input" type="text" placeholder="e.g. Jane Doe — Journalist" />
+        </label>
+        <label>Meta description <span class="hint">(shown in search results and link previews; defaults to your bio)</span>
+          <textarea id="meta-description-input" rows="2"></textarea>
+        </label>
+        <button id="save-display-settings-btn" class="btn primary">Save display settings</button>
+        <span id="display-settings-saved" class="saved-msg"></span>
+      </div>
+
+      <div class="panel">
+        <h2>Publication sources</h2>
+        <p class="hint">Add the author/archive page URL for each site you write for, e.g.
+           <code>https://example-news.com/author/your-name</code>. New articles are picked up
+           automatically via RSS where available.</p>
+        <div class="add-row">
+          <input id="new-source-url" type="text" placeholder="https://example.com/author/you" />
+          <input id="new-source-label" type="text" placeholder="Label (e.g. Example News)" style="max-width:180px" />
+          <button id="add-source-btn" class="btn primary">Add</button>
+        </div>
+        <table class="table" id="sources-table">
+          <thead><tr><th>Label</th><th>URL</th><th>Status</th><th>Last scanned</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2>Sections</h2>
+        <p class="hint">Group articles into topics (e.g. "Politics", "Reviews", "Interviews").
+           Visitors can filter by section on your public page.</p>
+        <div class="add-row">
+          <input id="new-section-name" type="text" placeholder="Section name" />
+          <button id="add-section-btn" class="btn primary">Add</button>
+        </div>
+        <table class="table" id="sections-table">
+          <thead><tr><th>Name</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2>Articles (<span id="article-total">0</span>)</h2>
+        <p class="hint">Scanned automatically from your sources above, or add one individually below
+           - useful for a piece a scan missed, or something published somewhere you don't want fully scanned.
+           Star an article to feature it prominently at the top of your public page.</p>
+
+        <details class="manual-article-form">
+          <summary class="btn">+ Add an article manually</summary>
+          <div class="manual-article-fields">
+            <label>Title*
+              <input id="manual-article-title" type="text" />
+            </label>
+            <label>URL*
+              <input id="manual-article-url" type="text" placeholder="https://example.com/my-article" />
+            </label>
+            <label>Excerpt
+              <textarea id="manual-article-excerpt" rows="2"></textarea>
+            </label>
+            <label>Image URL
+              <input id="manual-article-image" type="text" placeholder="https://example.com/image.jpg" />
+            </label>
+            <label>Published date
+              <input id="manual-article-date" type="date" />
+            </label>
+            <button id="add-manual-article-btn" class="btn primary">Add article</button>
+            <p id="manual-article-error" class="error"></p>
+          </div>
+        </details>
+
+        <div class="add-row">
+          <input id="article-search" type="text" placeholder="Search articles…" />
+        </div>
+
+        <table class="table" id="articles-table">
+          <thead><tr><th></th><th>Title</th><th>Source</th><th>Section</th><th>Date</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2>Socials &amp; contact buttons</h2>
+        <div class="add-row">
+          <select id="new-social-platform">
+            <option value="email">Email</option>
+            <option value="twitter">Twitter / X</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="github">GitHub</option>
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+            <option value="youtube">YouTube</option>
+            <option value="mastodon">Mastodon</option>
+            <option value="tiktok">TikTok</option>
+            <option value="bluesky">Bluesky</option>
+            <option value="substack">Substack</option>
+            <option value="website">Website</option>
+          </select>
+          <input id="new-social-label" type="text" placeholder="Label (e.g. Email me)" />
+          <input id="new-social-url" type="text" placeholder="URL or mailto:you@example.com" />
+          <button id="add-social-btn" class="btn primary">Add</button>
+        </div>
+        <table class="table" id="socials-table">
+          <thead><tr><th>Platform</th><th>Label</th><th>URL</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="passkey-panel" hidden>
+        <h2>Passkeys</h2>
+        <p id="passkey-count" class="hint"></p>
+        <label>New device label
+          <input id="new-device-label" type="text" placeholder="e.g. iPhone" />
+        </label>
+        <button id="add-passkey-btn" class="btn">Add another passkey</button>
+        <p id="add-passkey-error" class="error"></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="/vendor/simplewebauthn-browser.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
